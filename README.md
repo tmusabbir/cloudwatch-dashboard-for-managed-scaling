@@ -23,9 +23,26 @@ This stack takes two parameters
 . CloudWatch dashboard will use the metrics produced by this cluster. 
 - **UnitType**: The unit type which you are using for Managed Scaling. For instance groups, it's either Instances or
  vCPU. For Instance Fleet, it's InstanceFleetUnits. Depending on the unit type, EMR feeds different metrics to
- CloudWatch. In this solution, you select the UnitType, the solution creates the dashboard based on the respected
- metric.
+ CloudWatch. In this solution, you select the UnitType, the solution creates the dashboard based on the corresponding
+ metrics.
 
 ![cfn-input](images/cfn-input.png)
 
- 
+Once the CloudFormation stack is launched, you can go to the AWS CloudWatch console and check the dashboard created
+ for Amazon EMR Managed Scaling. You can execute a job to trigger managed scaling. If the cluster previously ran
+ job which triggered managed scaling, make sure you change the time window.
+
+![cw-dashboard1](images/cw-dashboard1.png)
+
+You can click on **Enlarge** option from the drop-down to expand the dashboard. The following picture shows two
+ difference occurrence of scale out/in actions when using UnitType=Instances. Purple line represents number of running
+  nodes, red line represents requested new nodes. As you notice here, **YARNMemoryAvailablePercentage** (burgundy line)
+drops from 100% to < 1%, during that time, EMR requested additional nodes to finish the running job. Within few
+ moments, additional nodes added to the cluster and **TotalNodesRunning** increased from 1 to 20. You can also try
+  this solution with other unit types.
+
+![cw-dashboard1](images/cw-dashboard2.png)
+
+
+The intent of this solution is to give you a head start by creating the right CloudWatch dashboard for your EMR
+ Managed Scaling Cluster. Feel free to fine tune your CloudWatch dashboard based on your requirement.
